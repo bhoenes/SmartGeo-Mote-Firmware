@@ -6,6 +6,7 @@
 #include "E-000001-000009_firmware_rev_1_0.h"
 
 
+
 int main(void) {
 	uint16_t BP_1a_avg_mV, BP_1a_min_mV, BP_1a_max_mV;
 	uint16_t BP_1b_avg_mV, BP_1b_min_mV, BP_1b_max_mV;

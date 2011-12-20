@@ -1,86 +1,171 @@
-###############################################################################
-# Makefile for the project board_checkout
-###############################################################################
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
 
-## General Flags
-PROJECT = board_checkout
-MCU = atxmega256a3
-TARGET = board_checkout.elf
-CC = avr-gcc
+SHELL := cmd.exe
+RM := rm -rf
 
-CPP = avr-g++
+USER_OBJS :=
 
-## Options common to compile, link and assembly rules
-COMMON = -mmcu=$(MCU)
+LIBS := 
+PROJ := 
 
-## Compile options common for all C compilation units.
-CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -std=gnu99 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
-CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d 
+O_SRCS := 
+C_SRCS := 
+S_SRCS := 
+S_UPPER_SRCS := 
+OBJ_SRCS := 
+ASM_SRCS := 
+PREPROCESSING_SRCS := 
+OBJS := 
+OBJS_AS_ARGS := 
+C_DEPS := 
+C_DEPS_AS_ARGS := 
+EXECUTABLES := 
+LIB_AS_ARGS :=
+OUTPUT_FILE_PATH :=
+OUTPUT_FILE_PATH_AS_ARGS :=
+HEX_FLASH_FILE_PATH :=
+HEX_FLASH_FILE_PATH_AS_ARGS :=
+HEX_EEPROM_FILE_PATH :=
+HEX_EEPROM_FILE_PATH_AS_ARGS :=
+LSS_FILE_PATH :=
+LSS_FILE_PATH_AS_ARGS :=
+MAP_FILE_PATH :=
+MAP_FILE_PATH_AS_ARGS :=
+AVR_APP_PATH :=C:/Program Files/Atmel/AVR Studio 5.0/AVR ToolChain/bin/
+QUOTE := "
+ADDITIONAL_DEPENDENCIES:=
+OUTPUT_FILE_DEP:=
 
-## Assembly specific flags
-ASMFLAGS = $(COMMON)
-ASMFLAGS += $(CFLAGS)
-ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
-
-## Linker flags
-LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=board_checkout.map
+# Every subdirectory with source files must be described here
+SUBDIRS := 
 
 
-## Intel Hex file production flags
-HEX_FLASH_FLAGS = -R .eeprom -R .fuse -R .lock -R .signature
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS +=  \
+../board_checkout.c \
+../adc_driver.c \
+../clksys_driver.c \
+../E-000001-000009__firmware_rev_1_0.c
 
-HEX_EEPROM_FLAGS = -j .eeprom
-HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
-HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
+
+PREPROCESSING_SRCS += 
 
 
-## Objects that must be built in order to link
-OBJECTS = board_checkout.o adc_driver.o clksys_driver.o E-000001-000009__firmware_rev_1_0.o 
+ASM_SRCS += 
 
-## Objects explicitly added by the user
-LINKONLYOBJECTS = 
 
-## Build
-all: $(TARGET) board_checkout.hex board_checkout.eep board_checkout.lss size
+OBJS +=  \
+board_checkout.o \
+adc_driver.o \
+clksys_driver.o \
+E-000001-000009__firmware_rev_1_0.o
 
-## Compile
-board_checkout.o: ../board_checkout.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-adc_driver.o: ../adc_driver.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+OBJS_AS_ARGS +=  \
+board_checkout.o \
+adc_driver.o \
+clksys_driver.o \
+E-000001-000009__firmware_rev_1_0.o
 
-clksys_driver.o: ../clksys_driver.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
-E-000001-000009__firmware_rev_1_0.o: ../E-000001-000009__firmware_rev_1_0.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+C_DEPS +=  \
+board_checkout.d \
+adc_driver.d \
+clksys_driver.d \
+E-000001-000009__firmware_rev_1_0.d
 
-##Link
-$(TARGET): $(OBJECTS)
-	 $(CC) $(LDFLAGS) $(OBJECTS) $(LINKONLYOBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
 
-%.hex: $(TARGET)
-	avr-objcopy -O ihex $(HEX_FLASH_FLAGS)  $< $@
+C_DEPS_AS_ARGS +=  \
+board_checkout.d \
+adc_driver.d \
+clksys_driver.d \
+E-000001-000009__firmware_rev_1_0.d
 
-%.eep: $(TARGET)
-	-avr-objcopy $(HEX_EEPROM_FLAGS) -O ihex $< $@ || exit 0
 
-%.lss: $(TARGET)
-	avr-objdump -h -S $< > $@
+OUTPUT_FILE_PATH +=board_checkout.elf
 
-size: ${TARGET}
-	@echo
-	@avr-size -C --mcu=${MCU} ${TARGET}
+OUTPUT_FILE_PATH_AS_ARGS +=board_checkout.elf
 
-## Clean target
-.PHONY: clean
+HEX_FLASH_FILE_PATH +=board_checkout.hex
+
+HEX_FLASH_FILE_PATH_AS_ARGS +=board_checkout.hex
+
+HEX_EEPROM_FILE_PATH +=board_checkout.eep
+
+HEX_EEPROM_FILE_PATH_AS_ARGS +=board_checkout.eep
+
+LSS_FILE_PATH +=board_checkout.lss
+
+LSS_FILE_PATH_AS_ARGS +=board_checkout.lss
+
+MAP_FILE_PATH =board_checkout.map
+
+MAP_FILE_PATH_AS_ARGS =board_checkout.map
+
+LIB_AS_ARGS +=libboard_checkout.a
+
+ADDITIONAL_DEPENDENCIES:= size
+
+OUTPUT_FILE_DEP:= ./makedep.mk
+
+# AVR/GNU C Compiler
+
+
+
+
+
+
+
+
+
+./%.o: .././%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler
+	$(QUOTE)$(AVR_APP_PATH)avr-gcc.exe$(QUOTE) -funsigned-char -funsigned-bitfields -Os -fpack-struct -fshort-enums -Wall -c -gdwarf-2 -std=gnu99   -mmcu=atxmega256a3   -MD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	@echo Finished building: $<
+
+
+
+# AVR/GNU Assembler
+
+
+
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(strip $(C_DEPS)),)
+-include $(C_DEPS)
+endif
+endif
+
+# Add inputs and outputs from these tool invocations to the build variables 
+
+# All Target
+all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
+
+# AVR/GNU C/C++ Linker
+$(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP)
+	@echo Building target: $@
+	@echo Invoking: AVR/GNU C/C++ Linker
+	$(QUOTE)$(AVR_APP_PATH)avr-gcc.exe$(QUOTE)  -mmcu=atxmega256a3   -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS)
+	@echo Finished building target: $@
+
+
+
+$(HEX_FLASH_FILE_PATH): $(OUTPUT_FILE_PATH)
+	$(QUOTE)$(AVR_APP_PATH)avr-objcopy.exe$(QUOTE) -O ihex -R .eeprom -R .fuse -R .lock -R .signature  $(QUOTE)$<$(QUOTE) $(QUOTE)$@$(QUOTE)
+
+$(HEX_EEPROM_FILE_PATH): $(OUTPUT_FILE_PATH)
+	-$(QUOTE)$(AVR_APP_PATH)avr-objcopy.exe$(QUOTE) -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0 --no-change-warnings -O ihex $(QUOTE)$<$(QUOTE) $(QUOTE)$@$(QUOTE) || exit 0
+
+$(LSS_FILE_PATH): $(OUTPUT_FILE_PATH)
+	$(QUOTE)$(AVR_APP_PATH)avr-objdump.exe$(QUOTE) -h -S $(QUOTE)$<$(QUOTE) > $(QUOTE)$@$(QUOTE)
+
+size: $(OUTPUT_FILE_PATH)
+	@$(QUOTE)$(AVR_APP_PATH)avr-size.exe$(QUOTE) -C --mcu=atxmega256a3 $(OUTPUT_FILE_PATH_AS_ARGS)
+
+# Other Targets
 clean:
-	-rm -rf $(OBJECTS) board_checkout.elf dep/* board_checkout.hex board_checkout.eep board_checkout.lss board_checkout.map
-
-
-## Other dependencies
--include $(shell mkdir dep 2>/dev/null) $(wildcard dep/*)
+	-$(RM) $(OBJS_AS_ARGS)$(C_DEPS_AS_ARGS) $(EXECUTABLES) $(LIB_AS_ARGS) $(HEX_FLASH_FILE_PATH_AS_ARGS) $(HEX_EEPROM_FILE_PATH_AS_ARGS) $(LSS_FILE_PATH_AS_ARGS) $(MAP_FILE_PATH_AS_ARGS)
 
