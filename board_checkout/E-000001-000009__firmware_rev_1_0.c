@@ -14,7 +14,7 @@ volatile int64_t *temp64; // for parsing SPI transactions from 8bit pieces to 64
 volatile uint8_t checksumADC[3] = {0};  // checksum for FRAM test
 volatile uint8_t checksumFRAM[3] = {0};  // checksum for FRAM test
 volatile int64_t sumFRAM[3];  // sum of all FRAM samples for averaging
-volatile uint8_t bankA_DIR, bankA_OUT, bankB_DIR, bankB_OUT;  // status of portexpander current configurations to allow bit level changes
+volatile uint8_t bankA_DIR, bankA_OUT, bankB_DIR, bankB_OUT;  // status of port expander current configurations to allow bit level changes
 
 
 // Sets the external 16MHz crystal on XTAL1 and XTAL2 as the system clock.
@@ -255,7 +255,7 @@ void PortEx_DIRSET(uint8_t pins, uint8_t bank) {
 	SPIInit(PS_SPI_MODE);
 	SPICS(TRUE);
 	portExCS(TRUE);
-	
+
 	if(bank) bankA_DIR = (uint8_t) (pins | bankA_DIR);
 	else bankB_DIR = (uint8_t) (pins | bankB_DIR);
 	
@@ -274,8 +274,8 @@ void PortEx_DIRSET(uint8_t pins, uint8_t bank) {
 		SPIBuffer[12] = SPIC.DATA;
 	}
 
-	SPICS(FALSE);
 	portExCS(FALSE);
+	SPICS(FALSE);
 	SPIDisable();
 
 
