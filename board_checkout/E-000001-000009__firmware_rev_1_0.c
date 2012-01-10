@@ -9,7 +9,6 @@ volatile uint16_t FRAMAddress;  // address counters for FRAM write/read
 volatile uint8_t FRAMReadBuffer[FR_READ_BUFFER_SIZE]; // storage for reading FRAM
 volatile uint8_t SPICount, discardCount;
 volatile int32_t *temp32;  // for parsing SPI transactions
-//volatile int32_t avgSum; // accumulator for averaging window
 volatile int64_t *temp64; // for parsing SPI transactions from 8bit pieces to 64bit whole
 volatile uint8_t checksumADC[3] = {0};  // checksum for FRAM test
 volatile uint8_t checksumFRAM[3] = {0};  // checksum for FRAM test
@@ -714,7 +713,7 @@ void CO_collectADC(uint8_t channel, uint8_t filterConfig, int32_t *avgV,
 	set_filter(filterConfig);
 
 	// if acc channel then enable DC Pass 
-	// it is assumedt that if not using high frequency acc specific function then 
+	// it is assumed that if not using high frequency acc specific function then 
 	// DC Pass is wanted.
 	if ((channel == ADC_CH_6_gc) ||	(channel == ADC_CH_7_gc) || 
 		(channel == ADC_CH_8_gc)) ACC_DCPassEnable(TRUE);

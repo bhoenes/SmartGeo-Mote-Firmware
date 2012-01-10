@@ -57,8 +57,7 @@ int main(void) {
 	FRAMTest3Channel();
 	// checksumADC and checkSumFRAM match
 
-	// breakpoint XX - collect sample from Channel 8 (ACC z-axis) with gain of 1 and DCPass enabled
-	// configure board resting lies flat with J1 facing up
+	
 	FRAMTest1Channel();
 	// checksumADC and checkSumFRAM match 
 
@@ -359,6 +358,6 @@ int main(void) {
 	nop();
 	// delta value of ??mV and diff1/diff2 within ??% of each other
 
-	
+	while(1);
 }
 
