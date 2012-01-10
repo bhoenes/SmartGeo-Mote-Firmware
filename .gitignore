@@ -3,3 +3,9 @@
 *.xml
 *.tmp
 *.mk
+*.eep
+*.elf
+*.hex
+*.lss
+*.map
+*.o
