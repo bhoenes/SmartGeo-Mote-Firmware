@@ -554,7 +554,7 @@ void set_ampGain(uint8_t channel, uint8_t gainExponent) {
 */
 void set_filter(uint8_t filterConfig) {
 	// hack to get ADC to work
-	//filterConfig |= 0x0F;
+	filterConfig |= 0x0F;
 
 	// boolean flags for upper/lower channels CS
 	uint8_t lowerCS = filterConfig & 0x03; 
@@ -578,7 +578,7 @@ void set_filter(uint8_t filterConfig) {
 	SPICS(TRUE);
 
 	// Send all logic high to ensure that the SDO line on the chip is
-	// left in high Z state after SPI tranaction.
+	// left in high Z state after SPI transaction.
 	// The t-1 SDI transaction is output on the SDO and the pin left in the configuration.
 	// of the last bit
 	SPIC.DATA = 0xFF;
@@ -876,13 +876,11 @@ void CO_collectSeismic3Channel(uint8_t filterConfig, uint8_t gain[], uint8_t sub
 	TCE1.CCBBUF = (0x10 << subsamplesPerSecond);
 	// Set oscillator source and frequency and start
 	TCE1.CTRLA = ( TCE1.CTRLA & ~TC1_CLKSEL_gm ) | TC_CLKSEL_DIV1_gc;
-	
-	
-		
+			
 	// wait for ADC to collect samples
 	while(sampleCount < FR_TOTAL_NUM_SE_SAMPLES);	
 
-	// turn off timer and interupts
+	// turn off timer and interrupts
 	TCC0.CTRLA = ( TCC0.CTRLA & ~TC0_CLKSEL_gm ) | TC_CLKSEL_OFF_gc;
 	TCE1.CTRLA = ( TCE1.CTRLA & ~TC1_CLKSEL_gm ) | TC_CLKSEL_OFF_gc;
 	PMIC.CTRL &= ~(PMIC_HILVLEN_bm | PMIC_MEDLVLEN_bm);	
@@ -965,11 +963,12 @@ void CO_collectSeismic1Channel(uint8_t channel, uint8_t filterConfig, uint8_t ga
 	sampleCount = 0;
 	SPICount = 0;
 	checksumADC[0] = checksumADC[1] = checksumADC[2] = 0;	
-	SPICS(TRUE);	
-
+	
 	// Enable interrupts.
 	PMIC.CTRL |= PMIC_HILVLEN_bm | PMIC_MEDLVLEN_bm;
 	sei();
+
+	SPICS(TRUE);
 
 	// Configure clock signal for AD7767 MCLK
 	PORTE.DIRSET = PIN5_bm;
@@ -984,7 +983,7 @@ void CO_collectSeismic1Channel(uint8_t channel, uint8_t filterConfig, uint8_t ga
 	// wait for ADC to collect samples
 	while(sampleCount < FR_TOTAL_NUM_SE_SAMPLES);	
 
-	// turn off timer and interupts
+	// turn off timer and interrupts
 	TCD0.CTRLA = ( TCD0.CTRLA & ~TC0_CLKSEL_gm ) | TC_CLKSEL_OFF_gc;
 	TCE1.CTRLA = ( TCE1.CTRLA & ~TC1_CLKSEL_gm ) | TC_CLKSEL_OFF_gc;
 	PMIC.CTRL &= ~(PMIC_HILVLEN_bm | PMIC_MEDLVLEN_bm);	
@@ -1128,11 +1127,11 @@ void readFRAM (uint16_t numBytes) {
 }
 
 void FRAMTest3Channel(void) {
-	uint8_t gains[3] = { GAIN_1_gc, GAIN_1_gc, GAIN_1_gc, };
+	uint8_t gains[3] = { GAIN_1_gc, GAIN_1_gc, GAIN_1_gc };
 			
 	CO_collectSeismic3Channel(FILTER_CH_2AND6_bm | FILTER_CH_3AND7_bm |
 		FILTER_CH_4AND8_bm | FILTER_HP_0_bm | FILTER_LP_600_gc,
-		gains, SSPS_SE_64K_gc, 21, TRUE, 13, 14, 16, 17);
+		gains, SSPS_SE_64K_gc, 21, TRUE, 13, 14, 15, 16);
 	ADCPower(TRUE);
 	_delay_us(250);
 	
