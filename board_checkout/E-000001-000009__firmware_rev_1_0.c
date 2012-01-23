@@ -427,17 +427,17 @@ void ADCPower(uint8_t on) {
 		PORTC.OUTSET = PIN0_bm | PIN1_bm; // VDCA and VDC-2 on and MUX-SYNC1
 		PORTE.OUTSET = PIN4_bm; // MUX-SYNC2
 		PORTF.OUTSET = PIN1_bm | PIN2_bm | PIN3_bm;  // ADC-CS and DAC write/latch
-		channelStatus = 0x00; // POR to zeros		
+		channelStatus = 0x00; // POR to zeros
+		_delay_ms(100);
 
-		// set SPI-MISO as input and pullup
+		// set SPI-MISO as input
 		PORTC.DIRCLR = PIN6_bm;
-		PORTC.PIN6CTRL = PORT_OPC_WIREDANDPULL_gc;		
-
+				
 		bankA_DIR = bankA_OUT = bankB_DIR = bankB_OUT = 0x00; // all pins input on reset
 		PortEx_DIRSET(0xFF, PS_BANKA);
 		PortEx_OUTSET(0xFF, PS_BANKA);  //write protect IN-AMP 1 thru 8
 		//setPortEx(0xFF, PS_BANKA);
-		set_filter(0xFF);  // set filters intitially to ensure data out pulled high
+		set_filter(0xFF);  // set filters initially to ensure data out pulled high
 
 	} else {
 		// low signal for low power
@@ -454,9 +454,9 @@ void ADCPower(uint8_t on) {
 		PORTE.DIRCLR = PIN4_bm;
 		PORTF.DIRCLR = PIN1_bm | PIN2_bm | PIN3_bm;
 		
-		// set SPI-MISO as input and clear pullup
+		// set SPI-MISO as input
 		PORTC.DIRCLR = PIN6_bm;
-		PORTC.PIN6CTRL = PORT_OPC_TOTEM_gc;
+		
 		
 		bankA_DIR = bankA_OUT = bankB_DIR = bankB_OUT = 0x00; // all pins input on reset
 		channelStatus = 0x00;
@@ -470,6 +470,7 @@ void Ext1Power(uint8_t on) {
 		PORTF.OUTSET = PIN5_bm;
 		//PortEx_DIRSET(PIN3_bm, PS_BANKB);
 		//PortEx_OUTSET(PIN3_bm, PS_BANKB);  //write protect SDHC
+		_delay_ms(100);
 		
 	} else {
 		PORTF.OUTCLR = PIN5_bm;
@@ -482,6 +483,7 @@ void Ext2Power(uint8_t on) {
 	if (on) {
 		PORTF.DIRSET = PIN6_bm;
 		PORTF.OUTSET = PIN6_bm;
+		_delay_ms(100);
 	} else {
 		PORTF.OUTCLR = PIN6_bm;
 		PORTF.DIRCLR = PIN6_bm;
@@ -492,6 +494,7 @@ void HVPower(uint8_t on) {
 	if (on) {
 		PORTF.DIRSET = PIN7_bm;
 		PORTF.OUTSET = PIN7_bm;
+		_delay_ms(100);
 	} else {
 		PORTF.OUTCLR = PIN7_bm;
 		PORTF.DIRCLR = PIN7_bm;
@@ -504,16 +507,7 @@ void HVPower(uint8_t on) {
 /*! \brief Sets gain on upto 8 on board AD8231 Op Amps via the A0, A1, A2 control lines.
  *	All selected op-amps will be set to the same gain value.
  *
- *  \param chipSelectMask	Select IN-AMP.  Numbering corresponds with VIN numbering.
- *							Bit Chip	IC	VIN
- *							0	AD8231	U12	(VIN 1)
- *							1	AD8231	U13	(VIN 2)
- *							2	AD8231	U15	(VIN 3)
- *							3	AD8231	U16	(VIN 4)
- *							4	AD8231	U21	(VIN 5)
- *							5	AD8231	U22	(VIN 6)
- *							6	AD8231	U23	(VIN 7)
- *							7	AD8231	U24	(VIN 8)
+ *	\param channel	channel for gain to be set
  *  \param gainExponent		Sets gain to 2^gainExponent[0:2].
  */
 void set_ampGain(uint8_t channel, uint8_t gainExponent) {
@@ -554,7 +548,7 @@ void set_ampGain(uint8_t channel, uint8_t gainExponent) {
 */
 void set_filter(uint8_t filterConfig) {
 	// hack to get ADC to work
-	filterConfig |= 0x0F;
+	//filterConfig |= 0x0F;
 
 	// boolean flags for upper/lower channels CS
 	uint8_t lowerCS = filterConfig & 0x03; 
@@ -584,6 +578,8 @@ void set_filter(uint8_t filterConfig) {
 	SPIC.DATA = 0xFF;
 	while(!(SPIC.STATUS & SPI_IF_bm));
 	SPIBuffer[12] = SPIC.DATA;
+
+	nop();
 
 	SPIC.DATA = SPIBuffer[0];
 	while(!(SPIC.STATUS & SPI_IF_bm));
@@ -794,8 +790,8 @@ ISR(PORTF_INT0_vect) {
 		SPICS(FALSE);
 
 		// create 32 bits from SPIBuffer[0:2] with sign extension of SPIBuffer[0][7]
-		if(SPIBuffer[0] & BIT7_bm) *(((uint8_t*)&data24Bit[sampleCount]) + 0) = 0xFF; // sign extension if negative
-		else *(((uint8_t*)&data24Bit[sampleCount]) + 0) = 0x00;
+		if(SPIBuffer[0] & BIT7_bm) *(((uint8_t*)&data24Bit[sampleCount]) + 3) = 0xFF; // sign extension if negative
+		else *(((uint8_t*)&data24Bit[sampleCount]) + 3) = 0x00;
 	
 		*(((uint8_t*)&data24Bit[sampleCount]) + 2) = SPIBuffer[0];
 		*(((uint8_t*)&data24Bit[sampleCount]) + 1) = SPIBuffer[1];

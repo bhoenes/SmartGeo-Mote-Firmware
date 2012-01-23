@@ -47,12 +47,13 @@ int main(void) {
 	// breakpoint XX - write known values with checksums to FRAM
 	// read known values back from FRAM and recalculate checksums
 	FRAMWriteKnownsCheck();
-	// checksumADC[0] = checkSumFRAM[0] = 0x37
-	// checksumADC[0] = checkSumFRAM[0] = 0xC9
-	// checksumADC[0] = checkSumFRAM[0] = 0x35
-	// sumFRAM[0] = sumFRAM[1] = sumFRAM[2] = 18CC5ED67
+	// checksumADC[0] = checkSumFRAM[0] = 0x37 = 55
+	// checksumADC[0] = checkSumFRAM[0] = 0xC9 = 201
+	// checksumADC[0] = checkSumFRAM[0] = 0x35 = 53
+	// sumFRAM[0] = sumFRAM[1] = sumFRAM[2] = 18CC5ED67 = 6656748903
 
-	// breakpoint XX - collect sample from all three siesmic channels with
+
+	// breakpoint XX - collect sample from all three seismic channels with
 	// checksums on FRAM writes and read back recalculating checksums
 	FRAMTest3Channel();
 	// checksumADC and checkSumFRAM match
