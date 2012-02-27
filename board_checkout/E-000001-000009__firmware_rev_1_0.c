@@ -162,6 +162,7 @@ void CO_collectBatt(uint16_t *avgV, uint16_t *minV, uint16_t *maxV) {
 	ADCPower(TRUE);
 	PortEx_DIRSET(BIT2_bm, PS_BANKB);
 	PortEx_OUTSET(BIT2_bm, PS_BANKB); // activate PIO24 (VBATT)
+	_delay_ms(100);
 	//setPortEx(BIT2_bm, PS_BANKB);
 		
 	/* Move stored calibration values to ADCB. */

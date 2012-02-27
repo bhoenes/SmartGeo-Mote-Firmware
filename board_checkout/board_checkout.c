@@ -252,6 +252,7 @@ int main(void) {
 			GAIN_1_gc, SPS_4K_gc);
 	// avg ??mV +/- 10% with min/max +/- 1% of avg
 
+	HVPower(FALSE);
 	Ext1Power(FALSE);
 
 	//**********************************************************************
@@ -261,13 +262,16 @@ int main(void) {
 	nop();
 
 	Ext1Power(TRUE);
+	HVPower(TRUE);
 
 	// breakpoint 6b - collect sample from Channel 4 with gain of 1
-	CO_collectADC(ADC_CH_4_gc, filterSettings, &BP_6b_avg_uV, &BP_6b_min_uV, &BP_6b_max_uV,
+	CO_collectADC(ADC_CH_5_gc, filterSettings, &BP_6b_avg_uV, &BP_6b_min_uV, &BP_6b_max_uV,
 			GAIN_1_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg	
+	// avg ??mV +/- 10% with min/max +/- 1% of avg
 
+	HVPower(FALSE);
 	Ext1Power(FALSE);
+
 
 	//**********************************************************************
 	//************** SETUP EXTERNAL CIRCUIT BEFORE PROCEEDING **************
