@@ -15,11 +15,14 @@ int main(void) {
 	int32_t BP_3b_avg_uV, BP_3b_min_uV, BP_3b_max_uV;
 	int32_t BP_3c_avg_uV, BP_3c_min_uV, BP_3c_max_uV;
 	int32_t BP_3d_avg_uV, BP_3d_min_uV, BP_3d_max_uV;
+	int32_t BP_3e_avg_uV, BP_3e_min_uV, BP_3e_max_uV;
 	int32_t BP_4a_avg_uV, BP_4a_min_uV, BP_4a_max_uV;
 	int32_t BP_4b_avg_uV, BP_4b_min_uV, BP_4b_max_uV;
 	int32_t BP_4c_avg_uV, BP_4c_min_uV, BP_4c_max_uV;
 	int32_t BP_4d_avg_uV, BP_4d_min_uV, BP_4d_max_uV;
-	int32_t BP_5_avg_uV, BP_5_min_uV, BP_5_max_uV;
+	int32_t BP_4e_avg_uV, BP_4e_min_uV, BP_4e_max_uV;
+	int32_t BP_5a_avg_uV, BP_5a_min_uV, BP_5a_max_uV;
+	int32_t BP_5b_avg_uV, BP_5b_min_uV, BP_5b_max_uV;
 	int32_t BP_6a_avg_uV, BP_6a_min_uV, BP_6a_max_uV;
 	int32_t BP_6b_avg_uV, BP_6b_min_uV, BP_6b_max_uV;
 	int32_t BP_7a_avg_uV, BP_7a_min_uV, BP_7a_max_uV;
@@ -90,15 +93,15 @@ int main(void) {
 
 	// breakpoint 3a - collect sample from Channel 1 (ELEC1/ELEC2) with gain of 1
 	CO_collectADC(ADC_CH_1_gc, filterSettings, &BP_3a_avg_uV, &BP_3a_min_uV, &BP_3a_max_uV,
-			GAIN_1_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg 
+			GAIN_2_gc, SPS_4K_gc);
+	// avg 600mV +/- 10% with min/max +/- 1% of avg 
 	
 	// breakpoint 3b - collect sample from Channel 1 (ELEC1/ELEC2) with gain of 2
 	CO_collectADC(ADC_CH_1_gc, filterSettings, &BP_3b_avg_uV, &BP_3b_min_uV, &BP_3b_max_uV,
-			GAIN_2_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg 
+			GAIN_1_gc, SPS_4K_gc);
+	// avg 300mV +/- 10% with min/max +/- 1% of avg 
 
-	//Ext1Power(FALSE);
+	Ext1Power(FALSE);
 
 	//**********************************************************************
 	//************** SETUP EXTERNAL CIRCUIT BEFORE PROCEEDING **************
@@ -108,16 +111,30 @@ int main(void) {
 
 	Ext1Power(TRUE);
 
-	// breakpoint 3c - collect sample from Channel 1 (ELEC1/ELEC2) polarity reversed with gain of 1
+	// breakpoint 3c - collect sample from Channel 1 (ELEC1/ELEC2) gain of 1
 	CO_collectADC(ADC_CH_1_gc, filterSettings, &BP_3c_avg_uV, &BP_3c_min_uV, &BP_3c_max_uV,
 			GAIN_1_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg 
+	// avg 0mV +/- 10% with min/max +/- 1% of avg 
 
+	Ext1Power(FALSE);
 
-	// breakpoint 3d - collect sample from Channel 1 (ELEC1/ELEC2) polarity reversed with gain of 2
+	//**********************************************************************
+	//************** SETUP EXTERNAL CIRCUIT BEFORE PROCEEDING **************
+	//************************ PAST NEXT BREAKPOINT ************************
+	//**********************************************************************
+	nop();
+
+	Ext1Power(TRUE);
+
+	// breakpoint 3d - collect sample from Channel 1 (ELEC1/ELEC2) polarity reversed with gain of 1
 	CO_collectADC(ADC_CH_1_gc, filterSettings, &BP_3d_avg_uV, &BP_3d_min_uV, &BP_3d_max_uV,
+			GAIN_1_gc, SPS_4K_gc);
+	// avg -300mV +/- 10% with min/max +/- 1% of avg 
+
+	// breakpoint 3e - collect sample from Channel 1 (ELEC1/ELEC2) polarity reversed with gain of 2
+	CO_collectADC(ADC_CH_1_gc, filterSettings, &BP_3e_avg_uV, &BP_3e_min_uV, &BP_3e_max_uV,
 			GAIN_2_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg 
+	// avg -600mV +/- 10% with min/max +/- 1% of avg 
 
 	Ext1Power(FALSE);
 
@@ -132,15 +149,15 @@ int main(void) {
 	// set filter for breakpoint 4
 	filterSettings = (uint8_t) (FILTER_CH_2AND6_bm | FILTER_HP_0_bm | FILTER_LP_600_gc);
 
-	// breakpoint 4a - collect sample from Channel 2 (ELEC3/ELEC4) with gain of 1
+	// breakpoint 4a - collect sample from Channel 2 (ELEC3/ELEC4) with gain of 2
 	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4a_avg_uV, &BP_4a_min_uV, &BP_4a_max_uV,
-			GAIN_1_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg 
-
-	// breakpoint 4b - collect sample from Channel 2 (ELEC3/ELEC4) with gain of 2
-	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4b_avg_uV, &BP_4b_min_uV, &BP_4b_max_uV,
 			GAIN_2_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg 
+	// avg 600mV +/- 10% with min/max +/- 1% of avg 
+
+	// breakpoint 4b - collect sample from Channel 2 (ELEC3/ELEC4) with gain of 1
+	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4b_avg_uV, &BP_4b_min_uV, &BP_4b_max_uV,
+			GAIN_1_gc, SPS_4K_gc);
+	// avg 300mV +/- 10% with min/max +/- 1% of avg 
 
 	Ext1Power(FALSE);
 
@@ -152,15 +169,10 @@ int main(void) {
 
 	Ext1Power(TRUE);
 
-	// breakpoint 4c - collect sample from Channel 2 (ELEC3/ELEC4) polarity reversed with gain of 1
+	// breakpoint 4c - collect sample from Channel 2 (ELEC3/ELEC4) with gain of 1
 	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4c_avg_uV, &BP_4c_min_uV, &BP_4c_max_uV,
 			GAIN_1_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg
-
-	// breakpoint 4d - collect sample from Channel 2 (ELEC3/ELEC4) polarity reversed with gain of 2
-	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4d_avg_uV, &BP_4d_min_uV, &BP_4d_max_uV,
-			GAIN_2_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg
+	// avg 0mV +/- 10% with min/max +/- 1% of avg
 
 	Ext1Power(FALSE);
 
@@ -171,15 +183,56 @@ int main(void) {
 	nop();
 
 	Ext1Power(TRUE);
+
+	// breakpoint 4d - collect sample from Channel 2 (ELEC3/ELEC4) polarity reversed with gain of 1
+	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4d_avg_uV, &BP_4d_min_uV, &BP_4d_max_uV,
+			GAIN_1_gc, SPS_4K_gc);
+	// avg -300mV +/- 10% with min/max +/- 1% of avg
+
+
+	// breakpoint 4e - collect sample from Channel 2 (ELEC3/ELEC4) polarity reversed with gain of 2
+	CO_collectADC(ADC_CH_2_gc, filterSettings, &BP_4e_avg_uV, &BP_4e_min_uV, &BP_4e_max_uV,
+			GAIN_2_gc, SPS_4K_gc);
+	// avg -600mV +/- 10% with min/max +/- 1% of avg
+
+	Ext1Power(FALSE);
+
+	//**********************************************************************
+	//************** SETUP EXTERNAL CIRCUIT BEFORE PROCEEDING **************
+	//************************ PAST NEXT BREAKPOINT ************************
+	//**********************************************************************
+	nop();
+
+	Ext1Power(TRUE);
+	HVPower(TRUE);
 
 	// set filter for breakpoint 5
-	filterSettings = (uint8_t) (FILTER_CH_1AND5_bm | FILTER_HP_0_bm | FILTER_LP_600_gc);
+	filterSettings = (uint8_t) (FILTER_CH_4AND8_bm | FILTER_HP_0_bm | FILTER_LP_600_gc);
 	
-	// breakpoint 5 - collect sample from Channel 1 (ELEC1/ELEC2) with gain of 1
-	CO_collectADC(ADC_CH_1_gc, filterSettings, &BP_5_avg_uV, &BP_5_min_uV, &BP_5_max_uV,
+	// breakpoint 5a - collect sample from Channel 4 with gain of 1
+	CO_collectADC(ADC_CH_4_gc, filterSettings, &BP_5a_avg_uV, &BP_5a_min_uV, &BP_5a_max_uV,
 			GAIN_1_gc, SPS_4K_gc);
-	// avg ??mV +/- 10% with min/max +/- 1% of avg
+	// avg 293mV +/- 10% with min/max +/- 1% of avg
+	
+	HVPower(FALSE);
+	Ext1Power(FALSE);
+	
+	
+	//**********************************************************************
+	//************** SETUP EXTERNAL CIRCUIT BEFORE PROCEEDING **************
+	//************************ PAST NEXT BREAKPOINT ************************
+	//**********************************************************************
+	nop();
 
+	Ext1Power(TRUE);
+	HVPower(TRUE);
+	
+	// breakpoint 5b - collect sample from Channel 4 with gain of 1
+	CO_collectADC(ADC_CH_4_gc, filterSettings, &BP_5b_avg_uV, &BP_5b_min_uV, &BP_5b_max_uV,
+			GAIN_1_gc, SPS_4K_gc);
+	// avg 571mV +/- 10% with min/max +/- 1% of avg
+
+	HVPower(FALSE);
 	Ext1Power(FALSE);
 
 	//**********************************************************************
@@ -189,12 +242,13 @@ int main(void) {
 	nop();
 
 	Ext1Power(TRUE);
-
+	HVPower(TRUE);
+	
 	// set filter for breakpoint 6
-	filterSettings = (uint8_t) (FILTER_CH_4AND8_bm | FILTER_HP_0_bm | FILTER_LP_600_gc);
+	filterSettings = (uint8_t) (FILTER_CH_1AND5_bm | FILTER_HP_0_bm | FILTER_LP_600_gc);
 
 	// breakpoint 6a - collect sample from Channel 4 with gain of 1
-	CO_collectADC(ADC_CH_4_gc, filterSettings, &BP_6a_avg_uV, &BP_6a_min_uV, &BP_6a_max_uV,
+	CO_collectADC(ADC_CH_5_gc, filterSettings, &BP_6a_avg_uV, &BP_6a_min_uV, &BP_6a_max_uV,
 			GAIN_1_gc, SPS_4K_gc);
 	// avg ??mV +/- 10% with min/max +/- 1% of avg
 
