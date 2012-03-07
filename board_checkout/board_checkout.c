@@ -47,25 +47,6 @@ int main(void) {
 	set_32MHz();  // for RC clock
 	//set_XOSC32MHz();  // for crystal when installed
 
-	// breakpoint XX - write known values with checksums to FRAM
-	// read known values back from FRAM and recalculate checksums
-	FRAMWriteKnownsCheck();
-	// checksumADC[0] = checkSumFRAM[0] = 0x37 = 55
-	// checksumADC[0] = checkSumFRAM[0] = 0xC9 = 201
-	// checksumADC[0] = checkSumFRAM[0] = 0x35 = 53
-	// sumFRAM[0] = sumFRAM[1] = sumFRAM[2] = 18CC5ED67 = 6656748903
-
-
-	// breakpoint XX - collect sample from all three seismic channels with
-	// checksums on FRAM writes and read back recalculating checksums
-	FRAMTest3Channel();
-	// checksumADC and checkSumFRAM match
-
-	
-	FRAMTest1Channel();
-	// checksumADC and checkSumFRAM match 
-
-
 	// breakpoint 1a - collect room temperature
 	CO_collectTemp(&BP_1a_avg_mV, &BP_1a_min_mV, &BP_1a_max_mV);
 	// avg 830mV +/- 25% with min/max +/- 1% of avg 
@@ -247,7 +228,7 @@ int main(void) {
 	// set filter for breakpoint 6
 	filterSettings = (uint8_t) (FILTER_CH_1AND5_bm | FILTER_HP_0_bm | FILTER_LP_600_gc);
 
-	// breakpoint 6a - collect sample from Channel 4 with gain of 1
+	// breakpoint 6a - collect sample from Channel 5 with gain of 1
 	CO_collectADC(ADC_CH_5_gc, filterSettings, &BP_6a_avg_uV, &BP_6a_min_uV, &BP_6a_max_uV,
 			GAIN_1_gc, SPS_4K_gc);
 	// avg ??mV +/- 10% with min/max +/- 1% of avg
@@ -277,6 +258,31 @@ int main(void) {
 	//************** SETUP EXTERNAL CIRCUIT BEFORE PROCEEDING **************
 	//************************ PAST NEXT BREAKPOINT ************************
 	//**********************************************************************
+	nop();
+
+	Ext1Power(TRUE);
+
+	// breakpoint 7a - write known values with checksums to FRAM
+	// read known values back from FRAM and recalculate checksums
+	FRAMWriteKnownsCheck();
+	// checksumADC[0] = checkSumFRAM[0] = 0x37 = 55
+	// checksumADC[0] = checkSumFRAM[0] = 0xC9 = 201
+	// checksumADC[0] = checkSumFRAM[0] = 0x35 = 53
+	// sumFRAM[0] = sumFRAM[1] = sumFRAM[2] = 18CC5ED67 = 6656748903
+
+
+	// breakpoint 7b - collect sample from all three seismic channels with
+	// checksums on FRAM writes and read back recalculating checksums
+	FRAMTest3Channel();
+	// checksumADC and checkSumFRAM match
+
+	// breakpoint 7c - collect sample from all three seismic channels with
+	// checksums on FRAM writes and read back recalculating checksums
+	FRAMTest1Channel();
+	// checksumADC and checkSumFRAM match 
+
+	Ext1Power(TRUE);
+
 	nop();
 
 	Ext1Power(TRUE);
